@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div>
+            <input type="text" placeholder="Search..." class="search">
+        </div>
+        <ul class="articles">
+        
+        </ul>
+    </div>
+    <style>
+        .wrapper {
+            width: 500px;
+            height:auto;
+            margin: 0 auto;
+        }
+        .wrapper  input {
+            width: 600px;
+            height: 40px;
+        }
+    </style>
+</body>
+<script>
+   const search = document.querySelector('.search');
+    const articles = document.querySelector('.articles');
+    const searchArticles = (e) => {
+        const value = e.target.value;
+        console.log(value);
+        fetch('https://62416c6a9b450ae2743f9165.mockapi.io/api/v1/articles')
+            .then(res => res.json())
+            .then(data => {
+                const filtered = data.filter(article => article.title.toLowerCase().includes(value.toLowerCase()));
+                const html = filtered.map(article => `
+                    <li>
+                        <h2>${article.title}</h2>
+                        <p>${article.content}</p>
+                    </li>
+                `);
+                articles.innerHTML = html;
+            })
+    }
+    search.addEventListener('input', searchArticles);  
+</script>
+</html>
